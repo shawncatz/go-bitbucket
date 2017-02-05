@@ -1,0 +1,14 @@
+hash: 69dda3ecbe6da17bf0b2371308f8fc92b9d33881271276d9bf1cfcc9843079cd
+updated: 2017-02-05T00:01:30.500086114-08:00
+imports:
+- name: github.com/keybase/go-keychain
+  version: fc621735da119d43461364cb0a35937cb95d4dd9
+- name: github.com/urfave/cli
+  version: 0bdeddeeb0f650497d603c4ad7b20cfe685682f6
+- name: golang.org/x/net
+  version: 41bba8d80bbfab43231ffdf4c210037baae5f6a3
+  subpackages:
+  - publicsuffix
+- name: gopkg.in/resty.v0
+  version: 2e0c2310ba20c7edb6162ea2f6c0d5bba2e5e56d
+testImports: []
