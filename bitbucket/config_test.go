@@ -3,7 +3,7 @@ package bitbucket
 import "testing"
 
 func TestNewConfig(t *testing.T) {
-	cfg, err := newConfig("fixtures/config.json")
+	cfg, err := loadConfig("fixtures/config.json")
 	if err != nil {
 		t.Errorf("creating config: %s", err)
 	}

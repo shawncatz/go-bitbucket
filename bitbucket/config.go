@@ -15,7 +15,7 @@ type Config struct {
 	password string
 }
 
-func newConfig(file string) (*Config, error) {
+func loadConfig(file string) (*Config, error) {
 	cfg := &Config{}
 
 	data, err := ioutil.ReadFile(file)
