@@ -1,6 +1,9 @@
 package bitbucket
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 var (
 	testClient *Client
@@ -10,7 +13,13 @@ var (
 func init() {
 	testClient, err = New("fixtures/config.json")
 	if err != nil {
-		panic("error creating client")
+		fmt.Printf("error creating client: %s\n", err)
+	}
+}
+
+func assertNotNil(t *testing.T, name string, val interface{}) {
+	if val == nil {
+		t.Errorf("%s == nil", name)
 	}
 }
 

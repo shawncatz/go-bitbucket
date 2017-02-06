@@ -12,7 +12,6 @@ type Client struct {
 
 func New(config string) (*Client, error) {
 	cfg, err := loadConfig(config)
-
 	if err != nil {
 		return nil, err
 	}

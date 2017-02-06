@@ -1,10 +1,11 @@
 package bitbucket
 
 import (
-	"encoding/json"
+	"errors"
 	"fmt"
+
 	"github.com/keybase/go-keychain"
-	"io/ioutil"
+	"github.com/tcnksm/go-gitconfig"
 )
 
 type Config struct {
@@ -18,19 +19,27 @@ type Config struct {
 func loadConfig(file string) (*Config, error) {
 	cfg := &Config{}
 
-	data, err := ioutil.ReadFile(file)
+	cfg.URL, err = gitconfig.Global("bitbucket.url")
 	if err != nil {
-		return nil, fmt.Errorf("could not read file: %s: %s", file, err)
+		return nil, err
 	}
 
-	err = json.Unmarshal(data, cfg)
+	cfg.Username, err = gitconfig.Global("bitbucket.user")
 	if err != nil {
-		return nil, fmt.Errorf("could not parse json: %s", err)
+		return nil, err
+	}
+
+	cfg.Keychain, err = gitconfig.Global("bitbucket.keychain")
+	if err != nil {
+		return nil, err
 	}
 
 	pwd, err := keychain.GetGenericPassword(cfg.Keychain, cfg.Username, "", "")
 	if err != nil {
 		return nil, fmt.Errorf("could not get password from keychain: %s", err)
+	}
+	if string(pwd) == "" {
+		return nil, errors.New("password is empty")
 	}
 
 	cfg.password = string(pwd)

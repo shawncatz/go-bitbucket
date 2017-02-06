@@ -4,9 +4,7 @@ import "testing"
 
 func TestNewConfig(t *testing.T) {
 	cfg, err := loadConfig("fixtures/config.json")
-	if err != nil {
-		t.Errorf("creating config: %s", err)
-	}
-
+	assertError(t, err)
+	assertNotNil(t, "cfg", cfg)
 	assertStringEquals(t, cfg.Username, "scatanzarite")
 }

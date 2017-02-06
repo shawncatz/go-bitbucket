@@ -2,6 +2,7 @@ package bitbucket
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 type ProjectList struct {
@@ -24,6 +25,9 @@ type Project struct {
 // {Size:25, Limit:25, IsLastPage:false, Values:[]Project }
 func (c *Client) Projects() (*ProjectList, error) {
 	body, err := c.Execute("projects")
+	if err != nil {
+		return nil, fmt.Errorf("retrieving projects: %s", err)
+	}
 
 	resp := ProjectList{}
 
@@ -39,6 +43,9 @@ func (c *Client) Projects() (*ProjectList, error) {
 // bitbucket.Project{Key:"CHEF", ID:1234, Name:"Chef", Description:"Configuration Management", Public:false, Type:"NORMAL", Links:bitbucket.LinkSliceMap{"self":bitbucket.LinkSlice{bitbucket.Link{HREF:"https://stash.example.com/projects/CHEF"}}}}
 func (c *Client) Project(name string) (*Project, error) {
 	body, err := c.Execute("projects/%s", name)
+	if err != nil {
+		return nil, fmt.Errorf("retrieving project: %s", err)
+	}
 
 	resp := Project{}
 
