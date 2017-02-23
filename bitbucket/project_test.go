@@ -4,20 +4,17 @@ import (
 	"testing"
 )
 
-func TestProjects(t *testing.T) {
-	assertNotNil(t, "testClient", testClient)
+func TestClient_Projects(t *testing.T) {
 	_, err := testClient.Projects()
 	assertError(t, err)
 }
 
-func TestProject(t *testing.T) {
-	assertNotNil(t, "testClient", testClient)
-	_, err := testClient.Project("chef")
+func TestClient_Project(t *testing.T) {
+	_, err := testClient.Project("test")
 	assertError(t, err)
 }
 
-func TestProjectMissing(t *testing.T) {
-	assertNotNil(t, "testClient", testClient)
+func TestClient_ProjectMissing(t *testing.T) {
 	_, err := testClient.Project("blarg")
 	if err == nil {
 		t.Errorf("missing project should not exist: %s", err)

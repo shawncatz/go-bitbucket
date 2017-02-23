@@ -2,17 +2,16 @@ package main
 
 import (
 	"fmt"
-	"os/exec"
-
 	"github.com/keybase/go-keychain"
 	"github.com/urfave/cli"
+	"os/exec"
 )
 
 func init() {
 	cmdList = append(cmdList, cli.Command{
 		Name:        "init",
 		Usage:       "initialize configuration",
-		Description: `creating configuration and configure keychain password`,
+		Description: `add configuration to gitconfig file and save password to keychain`,
 		Action:      cmdInit,
 	})
 }
