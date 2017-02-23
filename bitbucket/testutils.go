@@ -55,3 +55,9 @@ func assertStringEquals(t *testing.T, is, want string) {
 		t.Errorf("assert string equals: %s != %s", is, want)
 	}
 }
+
+func assertIntegerEquals(t *testing.T, is, want int) {
+	if is != want {
+		t.Errorf("assert integer equals: %d != %d", is, want)
+	}
+}

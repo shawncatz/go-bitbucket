@@ -1,7 +1,6 @@
 package bitbucket
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -35,32 +34,27 @@ func (c *Client) SetTesting() {
 	c.rest.SetDisableWarn(true)
 }
 
-func (c *Client) Execute(response interface{}, format string, args ...interface{}) error {
+func (c *Client) Execute(method string, format string, args ...interface{}) (*resty.Response, error) {
 	url := c.cfg.URL + "/" + fmt.Sprintf(format, args...)
 
 	if c.cfg.Password == "" {
-		return errors.New("password is empty")
+		return nil, errors.New("password is empty")
 	}
 
 	resp, err := c.rest.R().
 		SetBasicAuth(c.cfg.Username, c.cfg.Password).
 		SetHeader("Accept", "application/json").
-		Get(url)
+		Execute(method, url)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if resp.RawResponse.StatusCode != 200 {
-		return fmt.Errorf("response %d code", resp.RawResponse.StatusCode)
+		return nil, fmt.Errorf("response %d code", resp.RawResponse.StatusCode)
 	}
 
-	err = json.Unmarshal(resp.Body(), &resp)
-	if err != nil {
-		return err
-	}
-
-	return err
+	return resp, nil
 }
 
 //
