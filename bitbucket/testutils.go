@@ -8,18 +8,14 @@ import (
 )
 
 var (
-	err        error
 	testServer *mock.TestBitbucketServer
 	testClient *Client
 )
 
 func createTestClient() *Client {
-	testClient, err = New(&Config{URL: "http://localhost:8888", Username: "user", Password: "password"})
-	if err != nil {
-		fmt.Printf("error creating client: %s\n", err)
-	}
+	testClient = NewClient("http://localhost:8888", "user", "password")
 
-	testClient.SetTesting()
+	testClient.setTesting()
 
 	return testClient
 }

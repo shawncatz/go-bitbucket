@@ -1,10 +1,12 @@
 package bitbucket
 
-import "testing"
+import (
+	"testing"
+)
 
 func init() {
-	testServer = createTestServer()
 	testClient = createTestClient()
+	testServer = createTestServer()
 }
 
 func TestClient(t *testing.T) {

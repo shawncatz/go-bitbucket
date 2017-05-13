@@ -7,12 +7,12 @@ import (
 	"gopkg.in/resty.v0"
 )
 
-type RepositoryList struct {
+type RepoList struct {
 	Response
-	Values []Repository
+	Values []Repo
 }
 
-type Repository struct {
+type Repo struct {
 	Slug          string
 	ID            int `json:"id"`
 	Name          string
@@ -25,10 +25,12 @@ type Repository struct {
 	Links         LinkSliceMap
 }
 
-func (c *Client) Repositories(project string) (*RepositoryList, error) {
-	list := &RepositoryList{}
+type ReposService service
 
-	resp, err := c.Execute(resty.MethodGet, "projects/%s/repos", project)
+func (s *ReposService) List(project string) (*RepoList, error) {
+	list := &RepoList{}
+
+	resp, err := s.client.Execute(resty.MethodGet, "projects/%s/repos", project)
 	if err != nil {
 		return nil, fmt.Errorf("retrieving repositories for project %s: %s", project, err)
 	}
@@ -40,10 +42,10 @@ func (c *Client) Repositories(project string) (*RepositoryList, error) {
 	return list, nil
 }
 
-func (c *Client) Repository(project, repo string) (*Repository, error) {
-	repository := &Repository{}
+func (s *ReposService) Get(project, repo string) (*Repo, error) {
+	repository := &Repo{}
 
-	resp, err := c.Execute(resty.MethodGet, "projects/%s/repos/%s", project, repo)
+	resp, err := s.client.Execute(resty.MethodGet, "projects/%s/repos/%s", project, repo)
 	if err != nil {
 		return nil, fmt.Errorf("retrieving repository for project %s repo %s: %s", project, repo, err)
 	}

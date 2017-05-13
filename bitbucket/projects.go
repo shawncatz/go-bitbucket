@@ -22,13 +22,15 @@ type Project struct {
 	Links       LinkSliceMap
 }
 
+type ProjectsService service
+
 // Projects lists all of the accessible projects
 // pagination is not currently working
 // {Size:25, Limit:25, IsLastPage:false, Values:[]Project }
-func (c *Client) Projects() (*ProjectList, error) {
+func (s *ProjectsService) List() (*ProjectList, error) {
 	list := &ProjectList{}
 
-	resp, err := c.Execute(resty.MethodGet, "projects")
+	resp, err := s.client.Execute(resty.MethodGet, "projects")
 	if err != nil {
 		return nil, fmt.Errorf("retrieving projects: %s", err)
 	}
@@ -42,10 +44,10 @@ func (c *Client) Projects() (*ProjectList, error) {
 
 // Project retrieves the project of the given NAME
 // bitbucket.Project{Key:"CHEF", ID:1234, Name:"Chef", Description:"Configuration Management", Public:false, Type:"NORMAL", Links:bitbucket.LinkSliceMap{"self":bitbucket.LinkSlice{bitbucket.Link{HREF:"https://stash.example.com/projects/CHEF"}}}}
-func (c *Client) Project(name string) (*Project, error) {
+func (s *ProjectsService) Get(name string) (*Project, error) {
 	project := &Project{}
 
-	resp, err := c.Execute(resty.MethodGet, "projects/%s", name)
+	resp, err := s.client.Execute(resty.MethodGet, "projects/%s", name)
 	if err != nil {
 		return nil, fmt.Errorf("retrieving project: %s", err)
 	}
