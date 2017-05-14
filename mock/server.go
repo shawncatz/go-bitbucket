@@ -4,17 +4,19 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 // TestBouncerServer is a mock implementation of BouncerClient
 type TestBitbucketServer struct {
-	mux  *http.ServeMux
+	mux  *mux.Router
 	port int
 }
 
 // NewTestBouncerServer returns a mock implementation of a bouncer server
 func NewBitbucket() *TestBitbucketServer {
-	return &TestBitbucketServer{mux: http.NewServeMux(), port: 8888}
+	return &TestBitbucketServer{mux: mux.NewRouter(), port: 8888}
 }
 
 // Start starts up the mock bouncer server
@@ -45,7 +47,7 @@ func (server *TestBitbucketServer) HandleFunc(path string, handler func(http.Res
 	server.mux.HandleFunc(path, handler)
 }
 
-func (server *TestBitbucketServer) HandleFile(path, file string) {
+func (server *TestBitbucketServer) HandleFile(method, path, file string) {
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		body, err := ioutil.ReadFile(file)
 		if err != nil {
@@ -54,5 +56,5 @@ func (server *TestBitbucketServer) HandleFile(path, file string) {
 		}
 		w.Write(body)
 	}
-	server.mux.HandleFunc(path, handler)
+	server.mux.HandleFunc(path, handler).Methods(method)
 }

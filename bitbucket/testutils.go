@@ -22,10 +22,16 @@ func createTestClient() *Client {
 
 func createTestServer() *mock.TestBitbucketServer {
 	testServer = mock.NewBitbucket()
-	testServer.HandleFile("/projects", "fixtures/projects.json")
-	testServer.HandleFile("/projects/test", "fixtures/project.json")
-	testServer.HandleFile("/projects/test/repos", "fixtures/repositories.json")
-	testServer.HandleFile("/projects/test/repos/testing", "fixtures/repository.json")
+	testServer.HandleFile("GET", "/projects", "fixtures/projects.json")
+	testServer.HandleFile("POST", "/projects", "fixtures/project.json")
+	testServer.HandleFile("GET", "/projects/test", "fixtures/project.json")
+	testServer.HandleFile("DELETE", "/projects/test", "fixtures/project.json")
+	testServer.HandleFile("PUT", "/projects/test", "fixtures/project.json")
+	testServer.HandleFile("GET", "/projects/test/repos", "fixtures/repositories.json")
+	testServer.HandleFile("POST", "/projects/test/repos", "fixtures/repository.json")
+	testServer.HandleFile("GET", "/projects/test/repos/testing", "fixtures/repository.json")
+	testServer.HandleFile("GET", "/projects/test/repos/testing/pull-requests", "fixtures/pull-requests.json")
+	testServer.HandleFile("GET", "/inbox/pull-requests", "fixtures/pull-requests.json")
 
 	if err := testServer.Start(); err != nil {
 		fmt.Printf("could not start server: %s", err)

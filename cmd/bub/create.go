@@ -7,7 +7,7 @@ import (
 func init() {
 	cmdList = append(cmdList, cli.Command{
 		Name:  "create",
-		Usage: "create a pull request",
+		Usage: "create a repository",
 		Description: `Of the form 'PROJECT/REPO'
 	 If omitted, this will assume the PROJECT is the name of the parent
 	 directory, and the REPO is the name of the current working directory.

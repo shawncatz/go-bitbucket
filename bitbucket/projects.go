@@ -3,8 +3,6 @@ package bitbucket
 import (
 	"encoding/json"
 	"fmt"
-
-	"gopkg.in/resty.v0"
 )
 
 type ProjectList struct {
@@ -13,24 +11,25 @@ type ProjectList struct {
 }
 
 type Project struct {
-	Key         string
-	ID          int `json:"id"`
-	Name        string
-	Description string
-	Public      bool
-	Type        string
-	Links       LinkSliceMap
+	Key         string       `json:"key"`
+	ID          int          `json:"id,omitempty"`
+	Name        string       `json:"name"`
+	Description string       `json:"description"`
+	Avatar      string       `json:"avatar"`
+	Public      bool         `json:"public,omitempty"`
+	Type        string       `json:"type,omitempty"`
+	Links       LinkSliceMap `json:"links,omitempty"`
 }
 
 type ProjectsService service
 
-// Projects lists all of the accessible projects
+// List all of the accessible projects
 // pagination is not currently working
 // {Size:25, Limit:25, IsLastPage:false, Values:[]Project }
 func (s *ProjectsService) List() (*ProjectList, error) {
 	list := &ProjectList{}
 
-	resp, err := s.client.Execute(resty.MethodGet, "projects")
+	resp, err := s.client.Get("projects", nil)
 	if err != nil {
 		return nil, fmt.Errorf("retrieving projects: %s", err)
 	}
@@ -42,12 +41,12 @@ func (s *ProjectsService) List() (*ProjectList, error) {
 	return list, nil
 }
 
-// Project retrieves the project of the given NAME
+// Get retrieves the project of the given NAME
 // bitbucket.Project{Key:"CHEF", ID:1234, Name:"Chef", Description:"Configuration Management", Public:false, Type:"NORMAL", Links:bitbucket.LinkSliceMap{"self":bitbucket.LinkSlice{bitbucket.Link{HREF:"https://stash.example.com/projects/CHEF"}}}}
 func (s *ProjectsService) Get(name string) (*Project, error) {
 	project := &Project{}
 
-	resp, err := s.client.Execute(resty.MethodGet, "projects/%s", name)
+	resp, err := s.client.Get("projects/"+name, nil)
 	if err != nil {
 		return nil, fmt.Errorf("retrieving project: %s", err)
 	}
@@ -57,4 +56,48 @@ func (s *ProjectsService) Get(name string) (*Project, error) {
 	}
 
 	return project, err
+}
+
+// Create a project of the given NAME
+func (s *ProjectsService) Create(key, name, description string) (*Project, error) {
+	n := &Project{
+		Key:         key,
+		Name:        name,
+		Description: description,
+	}
+	p := &Project{}
+
+	resp, err := s.client.Post("projects", n)
+	if err != nil {
+		return nil, fmt.Errorf("retrieving project: %s", err)
+	}
+
+	if err := json.Unmarshal(resp.Body(), p); err != nil {
+		return nil, err
+	}
+
+	return p, err
+}
+
+func (s *ProjectsService) Delete(name string) error {
+	_, err := s.client.Delete("projects/" + name)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *ProjectsService) Update(name string, project *Project) (*Project, error) {
+	p := &Project{}
+
+	resp, err := s.client.Put("projects/"+name, project)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(resp.Body(), p); err != nil {
+		return nil, err
+	}
+
+	return p, nil
 }

@@ -9,8 +9,8 @@ import (
 
 func init() {
 	cmdList = append(cmdList, cli.Command{
-		Name:        "init",
-		Usage:       "initialize configuration",
+		Name:        "setup",
+		Usage:       "setup configuration",
 		Description: `add configuration to gitconfig file and save password to keychain`,
 		Action:      cmdInit,
 	})

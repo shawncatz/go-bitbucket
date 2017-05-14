@@ -1,6 +1,10 @@
-hash: 67ad034690917435c3d38a01a3b247ed44d6b8009752c60c8e632313d3c1cd4d
-updated: 2017-02-05T16:23:47.66852648-08:00
+hash: f11a30e6f9067bf4d9682cd5360886ec48cfd3b9bede572e0fb0f8199fafdbd1
+updated: 2017-05-14T10:11:29.014017408-07:00
 imports:
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: 392c28fe23e1c45ddba891b0320b3b5df220beea
 - name: github.com/howeyc/gopass
   version: bf9dde6d0d2c004a008c27aaee91170c786f6db8
 - name: github.com/keybase/go-keychain

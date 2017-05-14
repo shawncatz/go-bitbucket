@@ -3,8 +3,6 @@ package bitbucket
 import (
 	"encoding/json"
 	"fmt"
-
-	"gopkg.in/resty.v0"
 )
 
 type RepoList struct {
@@ -30,7 +28,7 @@ type ReposService service
 func (s *ReposService) List(project string) (*RepoList, error) {
 	list := &RepoList{}
 
-	resp, err := s.client.Execute(resty.MethodGet, "projects/%s/repos", project)
+	resp, err := s.client.Get("projects/"+project+"/repos", nil)
 	if err != nil {
 		return nil, fmt.Errorf("retrieving repositories for project %s: %s", project, err)
 	}
@@ -45,7 +43,7 @@ func (s *ReposService) List(project string) (*RepoList, error) {
 func (s *ReposService) Get(project, repo string) (*Repo, error) {
 	repository := &Repo{}
 
-	resp, err := s.client.Execute(resty.MethodGet, "projects/%s/repos/%s", project, repo)
+	resp, err := s.client.Get("projects/"+project+"/repos/"+repo, nil)
 	if err != nil {
 		return nil, fmt.Errorf("retrieving repository for project %s repo %s: %s", project, repo, err)
 	}
@@ -55,4 +53,25 @@ func (s *ReposService) Get(project, repo string) (*Repo, error) {
 	}
 
 	return repository, nil
+}
+
+func (s *ReposService) Create(project, key, name string) (*Repo, error) {
+	n := &Repo{
+		Slug: key,
+		Name: name,
+		Project: Project{
+			Key: project,
+		},
+	}
+
+	resp, err := s.client.Post("projects/"+project+"/repos", n)
+	if err != nil {
+		return nil, fmt.Errorf("creating repo: %s", err)
+	}
+
+	if err := json.Unmarshal(resp.Body(), n); err != nil {
+		return nil, err
+	}
+
+	return n, nil
 }

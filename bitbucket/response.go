@@ -1,8 +1,8 @@
 package bitbucket
 
 type Response struct {
-	Size       int
-	Limit      int
-	IsLastPage bool
-	Values     []interface{}
+	Size       int  `json:"size"`
+	Limit      int  `json:"limit"`
+	IsLastPage bool `json:"isLastPage"`
+	Start      int  `json:"start"`
 }
