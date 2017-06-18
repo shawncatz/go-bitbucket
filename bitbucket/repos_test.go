@@ -5,7 +5,7 @@ import (
 )
 
 func TestReposService_List(t *testing.T) {
-	list, err := testClient.Repos.List("test")
+	list, err := testClient.Repos.List("test", &ReposListOptions{ListOptions: ListOptions{}})
 	assertError(t, err)
 	assertIntegerEquals(t, list.Values[0].ID, 1)
 	assertStringEquals(t, list.Values[0].Name, "My repo")

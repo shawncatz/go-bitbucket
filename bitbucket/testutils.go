@@ -12,9 +12,8 @@ var (
 	testClient *Client
 )
 
-func createTestClient() *Client {
-	testClient = NewClient("http://localhost:8888", "user", "password")
-
+func createTestClient(url, user, pass string) *Client {
+	testClient = NewClient(url, user, pass)
 	testClient.setTesting()
 
 	return testClient
@@ -32,6 +31,7 @@ func createTestServer() *mock.TestBitbucketServer {
 	testServer.HandleFile("GET", "/projects/test/repos/testing", "fixtures/repository.json")
 	testServer.HandleFile("GET", "/projects/test/repos/testing/pull-requests", "fixtures/pull-requests.json")
 	testServer.HandleFile("GET", "/inbox/pull-requests", "fixtures/pull-requests.json")
+	testServer.HandleFile("GET", "/inbox/pull-requests/count", "fixtures/inbox_count.json")
 
 	if err := testServer.Start(); err != nil {
 		fmt.Printf("could not start server: %s", err)

@@ -6,6 +6,9 @@ import (
 )
 
 type InboxService service
+type InboxCount struct {
+	Count int
+}
 
 func (s *InboxService) List() (*PullRequestList, error) {
 	list := &PullRequestList{}
@@ -20,4 +23,19 @@ func (s *InboxService) List() (*PullRequestList, error) {
 	}
 
 	return list, nil
+}
+
+func (s *InboxService) Count() (int, error) {
+	counts := &InboxCount{}
+	resp, err := s.client.Get("inbox/pull-requests/count", nil)
+	if err != nil {
+		return 25, fmt.Errorf("retrieving inbox count: %s", err)
+	}
+
+	fmt.Printf("response: %s\n", string(resp.Body()))
+	if err := json.Unmarshal(resp.Body(), counts); err != nil {
+		return 26, err
+	}
+
+	return counts.Count, nil
 }

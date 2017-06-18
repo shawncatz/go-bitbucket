@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os/exec"
+
 	"github.com/keybase/go-keychain"
 	"github.com/urfave/cli"
-	"os/exec"
 )
 
 func init() {
@@ -12,15 +13,15 @@ func init() {
 		Name:        "setup",
 		Usage:       "setup configuration",
 		Description: `add configuration to gitconfig file and save password to keychain`,
-		Action:      cmdInit,
+		Action:      cmdSetup,
 	})
 }
 
-func cmdInit(c *cli.Context) error {
-	url := prompt("BitBucket URL", "https://api.bitbucket.com/")
-	user := prompt("Username", "")
-	service := prompt("Keychain Service", "bub")
-	pass := passwd("Password")
+func cmdSetup(c *cli.Context) error {
+	url := term.prompt("BitBucket URL", "https://api.bitbucket.com/")
+	user := term.prompt("Username", "")
+	service := term.prompt("Keychain Service", "bub")
+	pass := term.passwd("Password")
 
 	fmt.Println("Saving values to git config...")
 

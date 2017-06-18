@@ -8,8 +8,7 @@ import:
   subpackages:
   - publicsuffix
 - package: github.com/keybase/go-keychain
-- package: github.com/tcnksm/go-gitconfig
-  version: ~0.1.2
+- package: github.com/shawncatz/go-gitconfig/gitconfig
 - package: github.com/howeyc/gopass
 - package: golang.org/x/tools
 - package: github.com/gorilla/mux

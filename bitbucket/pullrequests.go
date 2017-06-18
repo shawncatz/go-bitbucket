@@ -29,14 +29,6 @@ type PullRequest struct {
 	Participants []*UserAssoc `json:"participants"`
 }
 
-type UserAssoc struct {
-	Role         string `json:"role"`
-	Approved     bool   `json:"approved"`
-	Status       string `json:"status"`
-	LastReviewed string `json:"lastReviewedCommit"`
-	User         User
-}
-
 type Ref struct {
 	ID         string `json:"id"`
 	Repository struct {
@@ -63,4 +55,17 @@ func (s *PullRequestsService) List(project, repo string) (*PullRequestList, erro
 	}
 
 	return list, nil
+}
+
+func (p *PullRequest) UserStatus(user string) string {
+	for _, u := range p.Reviewers {
+		if u.User.Name == user {
+			return u.Status
+		}
+	}
+	return ""
+}
+
+func (p *PullRequest) Name() string {
+	return fmt.Sprintf("%25.25s#%-4d", p.To.Repository.Project.Key+"/"+p.To.Repository.Slug, p.ID)
 }

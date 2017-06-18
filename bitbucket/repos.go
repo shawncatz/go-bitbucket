@@ -23,12 +23,21 @@ type Repo struct {
 	Links         LinkSliceMap
 }
 
+type ReposListOptions struct {
+	ListOptions
+}
+
 type ReposService service
 
-func (s *ReposService) List(project string) (*RepoList, error) {
+func (s *ReposService) List(project string, options *ReposListOptions) (*RepoList, error) {
 	list := &RepoList{}
 
-	resp, err := s.client.Get("projects/"+project+"/repos", nil)
+	params := map[string]string{
+		"limit": fmt.Sprintf("%d", options.Limit),
+		"start": fmt.Sprintf("%d", options.Start),
+	}
+
+	resp, err := s.client.Get("projects/"+project+"/repos", params)
 	if err != nil {
 		return nil, fmt.Errorf("retrieving repositories for project %s: %s", project, err)
 	}
