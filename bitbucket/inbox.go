@@ -32,7 +32,6 @@ func (s *InboxService) Count() (int, error) {
 		return 25, fmt.Errorf("retrieving inbox count: %s", err)
 	}
 
-	fmt.Printf("response: %s\n", string(resp.Body()))
 	if err := json.Unmarshal(resp.Body(), counts); err != nil {
 		return 26, err
 	}
