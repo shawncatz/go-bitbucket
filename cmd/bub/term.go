@@ -15,7 +15,9 @@ func NewTerm() *Term {
 	return &Term{
 		f: map[string]func(...interface{}) string{
 			"norm": gocolorize.NewColor("white").Paint,
-			"info": gocolorize.NewColor("white+b").Paint,
+			"bold": gocolorize.NewColor("white+b").Paint,
+			"succ": gocolorize.NewColor("green+b").Paint,
+			"info": gocolorize.NewColor("blue+b").Paint,
 			"warn": gocolorize.NewColor("yellow+b").Paint,
 			"crit": gocolorize.NewColor("red+b").Paint,
 		},
@@ -59,6 +61,22 @@ func (t *Term) Normal(text string) {
 
 func (t *Term) Normalf(format string, a ...interface{}) {
 	t.Printf("norm", format, a...)
+}
+
+func (t *Term) Bold(text string) {
+	t.Print("bold", text)
+}
+
+func (t *Term) Boldf(format string, a ...interface{}) {
+	t.Printf("bold", format, a...)
+}
+
+func (t *Term) Success(text string) {
+	t.Print("succ", text)
+}
+
+func (t *Term) Successf(format string, a ...interface{}) {
+	t.Printf("succ", format, a...)
 }
 
 func (t *Term) Info(text string) {

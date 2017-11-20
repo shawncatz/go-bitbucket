@@ -9,15 +9,18 @@ import (
 	"github.com/keybase/go-keychain"
 )
 
+// Test is a bind interface for the test
 type Test interface {
 	Fail(s string)
 }
 
+// AddGenericPassword adds generic password
 func AddGenericPassword(service string, account string, label string, password string, accessGroup string) error {
 	item := keychain.NewGenericPassword(service, account, label, []byte(password), accessGroup)
 	return keychain.AddItem(item)
 }
 
+// DeleteGenericPassword deletes generic password
 func DeleteGenericPassword(service string, account string, accessGroup string) error {
 	item := keychain.NewItem()
 	item.SetSecClass(keychain.SecClassGenericPassword)
@@ -27,7 +30,7 @@ func DeleteGenericPassword(service string, account string, accessGroup string) e
 	return keychain.DeleteItem(item)
 }
 
-// TestGenericPassword runs test code for generic password keychain item.
+// GenericPasswordTest runs test code for generic password keychain item.
 // This is here so we can export using gomobile bind and run this method on iOS simulator and device.
 // Access groups aren't supported in iOS simulator.
 func GenericPasswordTest(t Test, service string, accessGroup string) {

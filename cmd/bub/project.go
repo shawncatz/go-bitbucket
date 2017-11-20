@@ -2,8 +2,10 @@ package main
 
 import (
 	"errors"
-	"github.com/shawncatz/go-bitbucket/bitbucket"
+
 	"github.com/urfave/cli"
+
+	"github.com/shawncatz/go-bitbucket/bitbucket"
 )
 
 func init() {

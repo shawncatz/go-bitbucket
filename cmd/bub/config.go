@@ -1,9 +1,10 @@
 package main
 
 import (
+	"os"
+
 	"github.com/keybase/go-keychain"
 	"github.com/shawncatz/go-gitconfig/gitconfig"
-	"os"
 )
 
 type Config struct {

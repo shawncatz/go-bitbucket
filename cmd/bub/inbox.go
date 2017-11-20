@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/urfave/cli"
 )
 
@@ -35,14 +36,17 @@ func cmdInbox(c *cli.Context) error {
 		return err
 	}
 
+	f := "%-15.15s %30s %-70.70s\n"
 	for _, p := range list.Values {
 		s := p.UserStatus(client.Username)
-		if s == "UNAPPROVED" {
-			term.Infof("%-15.15s %30s \"%s\"\n", p.Author.Mention(), p.Name(), p.Title)
-		} else {
-			term.Normalf("%-15.15s %30s \"%s\"\n", p.Author.Mention(), p.Name(), p.Title)
+		switch s {
+		case "UNAPPROVED":
+			term.Infof(f, p.Author.Mention(), p.Name(), p.Title)
+		case "NEEDS_WORK":
+			term.Warnf(f, p.Author.Mention(), p.Name(), p.Title)
+		default:
+			term.Normalf(f, p.Author.Mention(), p.Name(), p.Title)
 		}
-		//term.Normalf("%#v\n", p)
 	}
 
 	return nil

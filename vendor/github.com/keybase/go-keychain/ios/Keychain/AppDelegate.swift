@@ -13,20 +13,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
 
-  func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
     var error: NSError?
 
-    GoBindAddGenericPassword("KeybaseTest", "gabriel", "A label", "toomanysecrets", nil, &error);
+    BindAddGenericPassword("KeybaseTest", "gabriel", "A label", "toomanysecrets", nil, &error);
     if (error != nil) {
-      print("Failed: \(error)")
+      print("Failed: \(String(describing: error))")
     } else {
       print("Add OK")
     }
 
-    GoBindDeleteGenericPassword("KeybaseTest", "gabriel", nil, &error)
+    BindDeleteGenericPassword("KeybaseTest", "gabriel", nil, &error)
     if (error != nil) {
-      print("Failed: \(error)")
+      print("Failed: \(String(describing: error))")
     } else {
       print("Delete OK")
     }

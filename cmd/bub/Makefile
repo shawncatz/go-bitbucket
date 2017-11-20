@@ -15,7 +15,7 @@ run: clean build
 	$(BINARY)
 
 deps:
-	cd .. && glide install
+	cd ../.. && dep ensure
 
 install: clean build
 	cp $(BINARY) $(GOPATH)/bin
